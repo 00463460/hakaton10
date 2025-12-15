@@ -15,13 +15,6 @@
 const sidebars = {
   // Main tutorial sidebar with 4 modules
   tutorialSidebar: [
-    // Introduction/Homepage
-    {
-      type: 'doc',
-      id: 'intro',
-      label: 'Welcome',
-    },
-
     // ========================================================================
     // MODULE 1: Introduction to Physical AI & Humanoid Robotics
     // ========================================================================

@@ -1,8 +1,20 @@
+/* Layout Wrapper - Remove default Docusaurus padding */
+.layoutWrapper :global(main) {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+.layoutWrapper :global(.container) {
+  padding: 0 !important;
+  max-width: 100% !important;
+}
+
 /* Landing Page - Full Screen Hero */
 .landingPage {
-  margin: -2rem calc(-50vw + 50%) -2rem;
+  margin: 0;
   padding: 0;
-  width: 100vw;
+  width: 100%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   display: flex;
