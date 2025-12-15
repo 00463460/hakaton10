@@ -1,0 +1,322 @@
+openapi: 3.1.0
+info:
+  title: Physical AI Textbook RAG API
+  description: FastAPI backend for RAG chatbot and content indexing
+  version: 1.0.0
+  contact:
+    name: Physical AI Textbook Team
+    url: https://github.com/<username>/physical-ai-textbook
+
+servers:
+  - url: https://physical-ai-backend.onrender.com
+    description: Production (Render Free Tier)
+  - url: http://localhost:8000
+    description: Local development
+
+paths:
+  /api/v1/chat:
+    post:
+      summary: Chat with RAG chatbot
+      description: |
+        Processes user query with optional context (selected text), retrieves relevant chunks from Qdrant,
+        generates answer using OpenAI GPT-3.5-turbo, returns answer with source citations.
+      operationId: chat
+      tags:
+        - Chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            examples:
+              general_query:
+                summary: General query without selected text
+                value:
+                  query: "What is URDF in ROS 2?"
+                  context: null
+              contextual_query:
+                summary: Query with selected text as context
+                value:
+                  query: "Explain this in simpler terms"
+                  context: "URDF (Unified Robot Description Format) is an XML format for representing a robot model..."
+      responses:
+        '200':
+          description: Successful response with answer and citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+              examples:
+                success:
+                  summary: Successful answer with sources
+                  value:
+                    answer: "URDF (Unified Robot Description Format) is an XML-based format used in ROS 2 to describe robot models, including links, joints, and visual/collision geometries."
+                    sources:
+                      - chapter: "Chapter 4: The Digital Twin"
+                        section: "4.2 URDF File Structure"
+                        url: "https://user.github.io/physical-ai-textbook/module-2/chapter-4#urdf-file-structure"
+                    confidence: 0.87
+        '400':
+          description: Invalid request (query too long, context exceeds limit)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                query_too_long:
+                  summary: Query exceeds 500 characters
+                  value:
+                    detail: "Query must be between 1 and 500 characters"
+        '500':
+          description: Internal server error (Qdrant unavailable, OpenAI API error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                qdrant_error:
+                  summary: Vector database connection failed
+                  value:
+                    detail: "Failed to connect to Qdrant: timeout after 5 seconds"
+
+  /api/v1/index:
+    post:
+      summary: Trigger content indexing
+      description: |
+        Fetches all MDX files from deployed GitHub Pages site, chunks text, generates embeddings,
+        stores vectors in Qdrant and metadata in Neon Postgres. This is a long-running operation
+        (5-10 minutes for full textbook).
+      operationId: index
+      tags:
+        - Indexing
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexRequest'
+            examples:
+              full_reindex:
+                summary: Re-index all content
+                value:
+                  force_reindex: true
+      responses:
+        '200':
+          description: Indexing completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexResponse'
+              examples:
+                success:
+                  summary: Successful indexing
+                  value:
+                    status: "success"
+                    total_chunks_indexed: 987
+                    total_chapters_processed: 12
+                    indexing_duration_seconds: 342.5
+        '500':
+          description: Indexing failed (GitHub Pages unreachable, Qdrant storage exceeded)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                storage_exceeded:
+                  summary: Qdrant Free Tier storage limit exceeded
+                  value:
+                    detail: "Projected vector storage (1.2 GB) exceeds Qdrant Free Tier limit (1 GB). Reduce content or upgrade plan."
+
+  /api/v1/health:
+    get:
+      summary: Health check
+      description: Verifies backend is running and connected to Qdrant and Neon Postgres
+      operationId: health
+      tags:
+        - Health
+      responses:
+        '200':
+          description: All services healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                healthy:
+                  summary: All systems operational
+                  value:
+                    status: "ok"
+                    qdrant_connected: true
+                    postgres_connected: true
+                    timestamp: "2025-12-12T15:30:00Z"
+        '503':
+          description: One or more services unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                qdrant_down:
+                  summary: Qdrant connection failed
+                  value:
+                    status: "degraded"
+                    qdrant_connected: false
+                    postgres_connected: true
+                    timestamp: "2025-12-12T15:30:00Z"
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: User's question about the textbook
+          example: "What is URDF in ROS 2?"
+        context:
+          type: string
+          nullable: true
+          maxLength: 2000
+          description: Optional selected text from page (for contextual queries)
+          example: "URDF (Unified Robot Description Format) is an XML format..."
+
+    ChatResponse:
+      type: object
+      required:
+        - answer
+        - sources
+      properties:
+        answer:
+          type: string
+          description: AI-generated answer grounded in textbook content
+          example: "URDF (Unified Robot Description Format) is an XML-based format used in ROS 2..."
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceCitation'
+          minItems: 0
+          maxItems: 5
+          description: Source citations for answer (max 5 chunks used)
+        confidence:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Average similarity score of retrieved chunks (0-1)
+          example: 0.87
+
+    SourceCitation:
+      type: object
+      required:
+        - chapter
+        - section
+        - url
+      properties:
+        chapter:
+          type: string
+          description: Chapter title from textbook
+          example: "Chapter 4: The Digital Twin"
+        section:
+          type: string
+          description: Section title within chapter
+          example: "4.2 URDF File Structure"
+        url:
+          type: string
+          format: uri
+          description: Direct link to section in deployed textbook (with hash anchor)
+          example: "https://user.github.io/physical-ai-textbook/module-2/chapter-4#urdf-file-structure"
+
+    IndexRequest:
+      type: object
+      properties:
+        force_reindex:
+          type: boolean
+          default: false
+          description: If true, delete existing vectors before re-indexing
+
+    IndexResponse:
+      type: object
+      required:
+        - status
+        - total_chunks_indexed
+        - total_chapters_processed
+        - indexing_duration_seconds
+      properties:
+        status:
+          type: string
+          enum: [success, partial_success, failed]
+          description: Indexing operation status
+          example: "success"
+        total_chunks_indexed:
+          type: integer
+          minimum: 0
+          description: Number of chunks successfully embedded and stored
+          example: 987
+        total_chapters_processed:
+          type: integer
+          minimum: 0
+          description: Number of MDX files processed
+          example: 12
+        indexing_duration_seconds:
+          type: number
+          format: float
+          minimum: 0
+          description: Total time for indexing operation
+          example: 342.5
+        errors:
+          type: array
+          items:
+            type: string
+          description: List of non-fatal errors (e.g., failed to fetch specific chapter)
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - qdrant_connected
+        - postgres_connected
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, error]
+          description: Overall system status
+          example: "ok"
+        qdrant_connected:
+          type: boolean
+          description: Whether Qdrant vector database is reachable
+          example: true
+        postgres_connected:
+          type: boolean
+          description: Whether Neon Postgres is reachable
+          example: true
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of health check
+          example: "2025-12-12T15:30:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+          description: Human-readable error message
+          example: "Query must be between 1 and 500 characters"
+
+  securitySchemes: {}  # No authentication for MVP (FR-023, FR-028 open access)
+
+tags:
+  - name: Chat
+    description: RAG chatbot query endpoints
+  - name: Indexing
+    description: Content indexing and management
+  - name: Health
+    description: System health and monitoring

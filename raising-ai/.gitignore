@@ -1,13 +1,12 @@
 # Dependencies
-node_modules/
-package-lock.json
+/node_modules
 
 # Production
-build/
+/build
 
 # Generated files
-.docusaurus/
-.cache/
+.docusaurus
+.cache-loader
 
 # Misc
 .DS_Store
@@ -19,17 +18,3 @@ build/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-
-# Temporary files
-nul
-*.tmp
-
-.vercel
-.env*.local
