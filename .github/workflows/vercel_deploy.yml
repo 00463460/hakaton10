@@ -1,0 +1,64 @@
+name: Deploy to Vercel
+
+# Workflow triggers
+on:
+  # Deploy on push to main branch
+  push:
+    branches:
+      - main
+
+  # Allow manual workflow trigger from Actions tab
+  workflow_dispatch:
+
+# Cancel in-progress runs for same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and Deploy to Vercel
+    runs-on: ubuntu-latest
+
+    # Checkout code at the start of the job
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history for git-based features
+
+      # Set up Node.js 20.x environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm' # Cache npm dependencies for faster builds
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      # Build Docusaurus site
+      - name: Build Docusaurus site
+        run: npm run build
+        env:
+          NODE_ENV: production
+          VERCEL_DOCUSAURUS_ENV: production
+
+      # Deploy to Vercel Production (main branch)
+      - name: Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        id: vercel-deployment
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod' # Deploy to production domain
+          working-directory: ./
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Optional: for deployment comments
+
+      # Output deployment URL
+      - name: Display deployment URL
+        run: |
+          echo "Deployment successful!"
+          echo "Production URL: ${{ steps.vercel-deployment.outputs.preview-url }}"

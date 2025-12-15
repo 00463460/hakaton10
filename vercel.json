@@ -1,0 +1,12 @@
+{
+  "framework": "docusaurus-2",
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm install",
+  "build": {
+    "env": {
+      "NODE_VERSION": "20.x",
+      "VERCEL_DOCUSAURUS_ENV": "production"
+    }
+  }
+}

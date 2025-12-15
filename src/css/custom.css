@@ -1,0 +1,450 @@
+/**
+ * Custom CSS for Physical AI & Humanoid Robotics Textbook
+ * Includes KaTeX/LaTeX rendering enhancements for kinematics and dynamics chapters
+ */
+
+/* ========================================================================
+   Root Variables & Theme Colors
+   ======================================================================== */
+
+:root {
+  --ifm-color-primary: #2e8555;
+  --ifm-color-primary-dark: #29784c;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #33925d;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Custom variables for KaTeX */
+  --katex-font-size-base: 1.1em;
+  --katex-display-margin: 1.5rem;
+  --katex-inline-margin: 0.2rem;
+}
+
+/* Dark mode theme adjustments */
+[data-theme='dark'] {
+  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary-dark: #21af90;
+  --ifm-color-primary-darker: #1fa588;
+  --ifm-color-primary-darkest: #1a8870;
+  --ifm-color-primary-light: #29d5b0;
+  --ifm-color-primary-lighter: #32d8b4;
+  --ifm-color-primary-lightest: #4fddbf;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================================================
+   KaTeX Enhancement Styles - HIGH-QUALITY MATHEMATICAL RENDERING
+   ======================================================================== */
+
+/* Base KaTeX styling for both inline and display equations */
+.katex {
+  font-size: var(--katex-font-size-base);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Inline equations (single dollar signs: $equation$) */
+.katex-inline {
+  display: inline-block;
+  margin: 0 var(--katex-inline-margin);
+  vertical-align: middle;
+  position: relative;
+  top: -0.1em; /* Slight vertical adjustment for better baseline alignment */
+}
+
+/* Display equations (double dollar signs: $$equation$$ or math blocks) */
+.katex-display {
+  display: block;
+  margin: var(--katex-display-margin) auto;
+  text-align: center;
+  padding: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Add subtle background for better contrast */
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+}
+
+[data-theme='dark'] .katex-display {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Ensure display equations have proper spacing in paragraphs */
+.markdown p .katex-display {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ========================================================================
+   KaTeX Typography Enhancements for Kinematics & Dynamics
+   ======================================================================== */
+
+/* Increase font size for better readability on mobile */
+@media (max-width: 768px) {
+  .katex {
+    font-size: 1.05em;
+  }
+
+  .katex-display {
+    padding: 1rem 0.5rem;
+    margin: 1rem auto;
+  }
+}
+
+/* Larger equations for kinematics/dynamics (matrices, vectors) */
+.katex-display .katex-html {
+  min-height: 2rem; /* Ensure minimum height for complex equations */
+}
+
+/* Matrix and array styling */
+.katex .mord.matrix,
+.katex .mord.array {
+  margin: 0.5rem 0;
+}
+
+/* Vector and matrix brackets */
+.katex .delimsizing {
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .katex .delimsizing {
+  color: var(--ifm-color-primary-light);
+}
+
+/* Fraction bar styling */
+.katex .frac-line {
+  border-bottom-width: 0.06em;
+}
+
+/* Subscripts and superscripts readability */
+.katex .sizing,
+.katex .mord,
+.katex .mbin,
+.katex .mrel {
+  font-weight: 500; /* Slightly bolder for better readability */
+}
+
+/* ========================================================================
+   Equation Numbering and Referencing
+   ======================================================================== */
+
+/* Custom equation numbering (if using manual numbering) */
+.equation-number {
+  float: right;
+  margin-left: 1rem;
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+[data-theme='dark'] .equation-number {
+  color: var(--ifm-color-emphasis-500);
+}
+
+/* Equation wrapper for numbered equations */
+.numbered-equation {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: var(--katex-display-margin) 0;
+}
+
+/* ========================================================================
+   Code Blocks with KaTeX (for LaTeX source examples)
+   ======================================================================== */
+
+/* Ensure LaTeX code blocks have proper syntax highlighting */
+code[class*="language-latex"],
+pre[class*="language-latex"] {
+  background-color: #f6f8fa;
+  color: #24292e;
+}
+
+[data-theme='dark'] code[class*="language-latex"],
+[data-theme='dark'] pre[class*="language-latex"] {
+  background-color: #161b22;
+  color: #c9d1d9;
+}
+
+/* ========================================================================
+   Responsive Equation Scrolling (for very long equations)
+   ======================================================================== */
+
+/* Enable horizontal scrolling for overflow equations */
+.katex-display > .katex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem; /* Space for scrollbar */
+}
+
+/* Custom scrollbar for equations */
+.katex-display > .katex::-webkit-scrollbar {
+  height: 8px;
+}
+
+.katex-display > .katex::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.katex-display > .katex::-webkit-scrollbar-thumb {
+  background: var(--ifm-color-primary);
+  border-radius: 4px;
+}
+
+.katex-display > .katex::-webkit-scrollbar-thumb:hover {
+  background: var(--ifm-color-primary-dark);
+}
+
+/* ========================================================================
+   Special Equation Containers (for callouts with equations)
+   ======================================================================== */
+
+/* Docusaurus admonitions with equations */
+.admonition .katex-display {
+  background-color: transparent;
+  padding: 1rem 0;
+}
+
+/* Tip/Note/Warning boxes with equations */
+.theme-admonition .katex {
+  color: inherit;
+}
+
+/* ========================================================================
+   Dark Mode Specific KaTeX Adjustments
+   ======================================================================== */
+
+[data-theme='dark'] .katex {
+  color: #e3e3e3;
+}
+
+/* Ensure operators and symbols are visible in dark mode */
+[data-theme='dark'] .katex .mord,
+[data-theme='dark'] .katex .mbin,
+[data-theme='dark'] .katex .mrel,
+[data-theme='dark'] .katex .mop {
+  color: #e3e3e3;
+}
+
+/* Dark mode fraction lines */
+[data-theme='dark'] .katex .frac-line {
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ========================================================================
+   Accessibility Enhancements for Math Content
+   ======================================================================== */
+
+/* Screen reader support (KaTeX generates mathml, but enhance focus styles) */
+.katex:focus,
+.katex-display:focus {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .katex {
+    font-weight: 600;
+  }
+
+  .katex-display {
+    border: 1px solid currentColor;
+  }
+}
+
+/* ========================================================================
+   Print Styles for Mathematical Content
+   ======================================================================== */
+
+@media print {
+  .katex-display {
+    background-color: transparent;
+    page-break-inside: avoid;
+  }
+
+  .katex {
+    font-size: 1em;
+  }
+}
+
+/* ========================================================================
+   Custom Textbook Enhancements
+   ======================================================================== */
+
+/* Chapter headings */
+article h1 {
+  border-bottom: 3px solid var(--ifm-color-primary);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Section headings with better spacing */
+article h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary-darker);
+}
+
+[data-theme='dark'] article h2 {
+  color: var(--ifm-color-primary-lighter);
+}
+
+/* Code blocks enhancement */
+.prism-code {
+  font-size: 0.9rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .prism-code {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Copy button for code blocks */
+.clean-btn {
+  transition: all 0.2s ease;
+}
+
+.clean-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Improved table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+}
+
+td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================================================
+   Diagram Placeholders Styling
+   ======================================================================== */
+
+/* Style for diagram placeholders until images are added */
+.diagram-placeholder {
+  display: block;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  border: 2px dashed var(--ifm-color-primary);
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem auto;
+  text-align: center;
+  font-style: italic;
+  color: var(--ifm-color-emphasis-700);
+  max-width: 800px;
+}
+
+[data-theme='dark'] .diagram-placeholder {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  color: var(--ifm-color-emphasis-400);
+}
+
+/* ========================================================================
+   Learning Objectives & Practice Exercises Styling
+   ======================================================================== */
+
+/* Learning objectives list */
+.learning-objectives {
+  background-color: rgba(46, 133, 85, 0.05);
+  border-left: 4px solid var(--ifm-color-primary);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 4px;
+}
+
+[data-theme='dark'] .learning-objectives {
+  background-color: rgba(46, 133, 85, 0.1);
+}
+
+.learning-objectives h3 {
+  margin-top: 0;
+  color: var(--ifm-color-primary);
+}
+
+/* Practice exercises */
+.practice-exercise {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  padding: 1rem 1.5rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+[data-theme='dark'] .practice-exercise {
+  background-color: rgba(255, 193, 7, 0.15);
+}
+
+/* ========================================================================
+   Mobile Optimizations
+   ======================================================================== */
+
+@media (max-width: 576px) {
+  /* Reduce margins on mobile */
+  .katex-display {
+    margin: 1rem auto;
+    padding: 1rem 0.5rem;
+  }
+
+  /* Adjust table font size */
+  table {
+    font-size: 0.9rem;
+  }
+
+  /* Reduce heading sizes slightly */
+  article h1 {
+    font-size: 1.75rem;
+  }
+
+  article h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================================================
+   Performance Optimizations
+   ======================================================================== */
+
+/* Use GPU acceleration for smoother scrolling */
+.katex-display,
+.prism-code {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Optimize font loading */
+@font-face {
+  font-display: swap; /* Ensure text remains visible during webfont load */
+}
