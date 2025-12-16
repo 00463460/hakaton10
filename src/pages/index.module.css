@@ -21,6 +21,51 @@
   align-items: center;
 }
 
+/* Announcement Banner */
+.announcementBanner {
+  background: linear-gradient(90deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.announcementBanner .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  max-width: 1200px !important;
+  padding: 0 1rem !important;
+}
+
+.announcementIcon {
+  font-size: 1.5rem;
+}
+
+.announcementText {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.announcementText strong {
+  font-weight: 700;
+}
+
+.announcementLink {
+  color: white;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: opacity 0.3s ease;
+}
+
+.announcementLink:hover {
+  opacity: 0.8;
+  color: white;
+  text-decoration: underline;
+}
+
 /* Hero Container */
 .heroContainer {
   max-width: 1400px;

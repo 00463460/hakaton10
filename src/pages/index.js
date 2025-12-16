@@ -70,6 +70,19 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Announcement Banner */}
+      <div className={styles.announcementBanner}>
+        <div className="container">
+          <span className={styles.announcementIcon}>🚀</span>
+          <span className={styles.announcementText}>
+            <strong>Physical AI Hackathon</strong> in progress! Build your robotics project with this textbook.
+          </span>
+          <a href="https://panaversity.com" target="_blank" rel="noopener noreferrer" className={styles.announcementLink}>
+            Learn more →
+          </a>
+        </div>
+      </div>
+
       <div id="curriculum" className={styles.curriculumSection}>
         <div className="container">
           <h2 className={styles.sectionTitle}>Four Learning Modules</h2>
