@@ -65,6 +65,9 @@
   color: white;
   padding: 16px 20px;
   border-radius: 16px 16px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .chatHeaderContent {
@@ -87,6 +90,28 @@
 .chatHeaderSubtitle {
   font-size: 12px;
   opacity: 0.9;
+}
+
+.logoutButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.logoutButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.logoutButton:active {
+  transform: scale(0.95);
 }
 
 /* Selected Text Banner */

@@ -1,0 +1,37 @@
+# FastAPI and web server
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Cohere SDK for LLM and embeddings
+cohere==4.47
+
+# Vector database (Qdrant)
+qdrant-client==1.7.3
+
+# PostgreSQL database (Neon) - Using psycopg (pure Python, no compilation needed)
+psycopg[binary]==3.1.16
+sqlalchemy==2.0.25
+
+# Environment variables
+python-dotenv==1.0.0
+
+# HTTP client for API calls
+httpx==0.26.0
+requests==2.31.0
+
+# Data processing
+numpy==1.26.3
+pandas==2.1.4
+
+# CORS middleware
+python-jose[cryptography]==3.3.0
+
+# Logging and monitoring
+structlog==24.1.0
+
+# Testing (optional, for development)
+pytest==7.4.4
+pytest-asyncio==0.23.3

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatWidget.module.css';
+import AuthModal from './AuthModal';
 
 const BACKEND_URL = process.env.NODE_ENV === 'production'
   ? 'https://your-backend-url.onrender.com'  // Replace with your deployed backend URL
@@ -7,6 +8,9 @@ const BACKEND_URL = process.env.NODE_ENV === 'production'
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
@@ -19,6 +23,16 @@ export default function ChatWidget() {
   const [selectedText, setSelectedText] = useState('');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Check authentication on mount
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    const email = localStorage.getItem('userEmail');
+    if (token && email) {
+      setIsAuthenticated(true);
+      setUserEmail(email);
+    }
+  }, []);
 
   // Scroll to bottom when messages change
   const scrollToBottom = () => {
@@ -51,7 +65,32 @@ export default function ChatWidget() {
   }, [isOpen]);
 
   const toggleChat = () => {
+    // Require login to open chat
+    if (!isAuthenticated && !isOpen) {
+      setShowAuthModal(true);
+      return;
+    }
     setIsOpen(!isOpen);
+  };
+
+  const handleAuthSuccess = (data) => {
+    setIsAuthenticated(true);
+    setUserEmail(data.email);
+    setShowAuthModal(false);
+    setIsOpen(true);  // Open chat after successful login
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userEmail');
+    setIsAuthenticated(false);
+    setUserEmail('');
+    setIsOpen(false);
+    setMessages([{
+      role: 'assistant',
+      content: 'Hi! I\'m your AI assistant for the Physical AI textbook. Ask me anything about humanoid robotics, ROS 2, vision-language-action models, or any chapter content!',
+      timestamp: new Date()
+    }]);
   };
 
   const sendMessage = async () => {
@@ -154,9 +193,16 @@ export default function ChatWidget() {
               <div className={styles.chatHeaderIcon}>🤖</div>
               <div>
                 <div className={styles.chatHeaderTitle}>Physical AI Assistant</div>
-                <div className={styles.chatHeaderSubtitle}>Powered by Cohere & RAG</div>
+                <div className={styles.chatHeaderSubtitle}>
+                  {isAuthenticated ? `Logged in as ${userEmail}` : 'Powered by Cohere & RAG'}
+                </div>
               </div>
             </div>
+            {isAuthenticated && (
+              <button className={styles.logoutButton} onClick={handleLogout} title="Logout">
+                Logout
+              </button>
+            )}
           </div>
 
           {/* Selected Text Banner */}
@@ -258,6 +304,13 @@ export default function ChatWidget() {
           </div>
         </div>
       )}
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+      />
     </>
   );
 }

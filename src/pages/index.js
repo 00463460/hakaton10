@@ -90,33 +90,49 @@ export default function Home() {
             A structured learning path from fundamentals to advanced deployment
           </p>
 
-          <div className={styles.modulesGrid}>
-            <div className={styles.moduleCard}>
-              <div className={styles.moduleIcon}>📘</div>
-              <h3>Module 1: Introduction & Humanoid Robotics</h3>
-              <p>Explore the Physical AI landscape, humanoid platforms, and the future of embodied intelligence.</p>
-              <a href="/module-1/chapter-1" className={styles.moduleLink}>Learn more →</a>
+          <div className={styles.timeline}>
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineIcon}>
+                <div className={styles.iconCircle} style={{background: '#ff6b6b'}}>📘</div>
+              </div>
+              <div className={styles.timelineContent}>
+                <h3>Module 1: Introduction & Humanoid Robotics</h3>
+                <p>Explore the Physical AI landscape, humanoid platforms, and the future of embodied intelligence.</p>
+                <a href="/module-1/chapter-1" className={styles.moduleLink}>Learn more →</a>
+              </div>
             </div>
 
-            <div className={styles.moduleCard}>
-              <div className={styles.moduleIcon}>🔧</div>
-              <h3>Module 2: ROS 2 & Simulation</h3>
-              <p>Master ROS 2 fundamentals, Gazebo simulation, and digital twin development for robotics.</p>
-              <a href="/module-2/chapter-3" className={styles.moduleLink}>Learn more →</a>
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineIcon}>
+                <div className={styles.iconCircle} style={{background: '#ffa500'}}>🔧</div>
+              </div>
+              <div className={styles.timelineContent}>
+                <h3>Module 2: ROS 2 & Simulation</h3>
+                <p>Master ROS 2 fundamentals, Gazebo simulation, and digital twin development for robotics.</p>
+                <a href="/module-2/chapter-3" className={styles.moduleLink}>Learn more →</a>
+              </div>
             </div>
 
-            <div className={styles.moduleCard}>
-              <div className={styles.moduleIcon}>🧠</div>
-              <h3>Module 3: Vision-Language-Action Models</h3>
-              <p>Integrate foundation models, imitation learning, and reinforcement learning for intelligent robots.</p>
-              <a href="/module-3/chapter-7" className={styles.moduleLink}>Learn more →</a>
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineIcon}>
+                <div className={styles.iconCircle} style={{background: '#667eea'}}>🧠</div>
+              </div>
+              <div className={styles.timelineContent}>
+                <h3>Module 3: Vision-Language-Action Models</h3>
+                <p>Integrate foundation models, imitation learning, and reinforcement learning for intelligent robots.</p>
+                <a href="/module-3/chapter-7" className={styles.moduleLink}>Learn more →</a>
+              </div>
             </div>
 
-            <div className={styles.moduleCard}>
-              <div className={styles.moduleIcon}>🚀</div>
-              <h3>Module 4: Advanced Topics</h3>
-              <p>Deep dive into kinematics, control theory, and sim-to-real deployment strategies.</p>
-              <a href="/module-4/chapter-11" className={styles.moduleLink}>Learn more →</a>
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineIcon}>
+                <div className={styles.iconCircle} style={{background: '#9333ea'}}>🚀</div>
+              </div>
+              <div className={styles.timelineContent}>
+                <h3>Module 4: Advanced Topics</h3>
+                <p>Deep dive into kinematics, control theory, and sim-to-real deployment strategies.</p>
+                <a href="/module-4/chapter-11" className={styles.moduleLink}>Learn more →</a>
+              </div>
             </div>
           </div>
         </div>

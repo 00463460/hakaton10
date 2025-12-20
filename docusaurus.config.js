@@ -88,32 +88,6 @@ const config = {
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: 'Textbook',
-          },
-          {
-            to: '/module-1/chapter-1',
-            label: 'Module 1',
-            position: 'left',
-          },
-          {
-            to: '/module-2/chapter-3',
-            label: 'Module 2',
-            position: 'left',
-          },
-          {
-            to: '/module-3/chapter-7',
-            label: 'Module 3',
-            position: 'left',
-          },
-          {
-            to: '/module-4/chapter-11',
-            label: 'Module 4',
-            position: 'left',
-          },
-          {
             href: 'https://github.com/panaversity/physical-ai-book',
             label: 'GitHub',
             position: 'right',

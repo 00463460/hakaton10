@@ -448,3 +448,53 @@ td {
 @font-face {
   font-display: swap; /* Ensure text remains visible during webfont load */
 }
+
+/* ========================================================================
+   Google Translate Customization
+   ======================================================================== */
+
+/* Hide Google Translate banner and branding */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-te-gadget {
+  font-family: inherit !important;
+}
+
+.goog-te-gadget img {
+  display: none !important;
+}
+
+.goog-te-gadget-simple {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Hide Google Translate toolbar */
+.goog-te-menu-frame {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Fix body position after translation */
+body.translated-ltr {
+  top: 0 !important;
+}
+
+/* Improve translated text readability */
+.translated-rtl {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.translated-rtl .navbar {
+  direction: rtl !important;
+}
+
+.translated-rtl .menu {
+  direction: rtl !important;
+}

@@ -4,17 +4,24 @@ Uses Cohere for LLM and embeddings, Qdrant for vector storage, Neon for PostgreS
 """
 
 import os
+import asyncio
 from typing import Optional, List
 from contextlib import asynccontextmanager
+from datetime import datetime, timedelta
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from pydantic import BaseModel, Field, EmailStr
 import cohere
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 import structlog
 from dotenv import load_dotenv
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import bcrypt
+import jwt
 
 # Load environment variables from .env file
 load_dotenv()
@@ -30,8 +37,16 @@ NEON_DB_URL = os.getenv("NEON_DB_URL")
 
 # Cohere configuration
 EMBEDDING_MODEL = "embed-english-light-v3.0"  # Free-tier friendly
-LLM_MODEL = "command-light"  # Free-tier friendly
+LLM_MODEL = "command-a-03-2025"  # Latest Cohere model (command-r was deprecated Sept 2025)
 VECTOR_DIMENSION = 384  # Dimension for embed-english-light-v3.0
+
+# Authentication configuration
+JWT_SECRET = os.getenv("JWT_SECRET", "your-secret-key-change-in-production")
+JWT_ALGORITHM = "HS256"
+JWT_EXPIRATION_HOURS = 24
+
+# Security
+security = HTTPBearer()
 
 # Global clients (initialized in lifespan)
 cohere_client: Optional[cohere.Client] = None
@@ -146,6 +161,141 @@ class HealthResponse(BaseModel):
     services: dict
 
 
+class SignupRequest(BaseModel):
+    """Request model for user signup"""
+    email: EmailStr = Field(..., description="User email address")
+    password: str = Field(..., min_length=6, description="User password (min 6 characters)")
+
+
+class LoginRequest(BaseModel):
+    """Request model for user login"""
+    email: EmailStr = Field(..., description="User email address")
+    password: str = Field(..., description="User password")
+
+
+class AuthResponse(BaseModel):
+    """Response model for authentication"""
+    token: str = Field(..., description="JWT access token")
+    email: str = Field(..., description="User email")
+    message: str = Field(..., description="Success message")
+
+
+class UserResponse(BaseModel):
+    """Response model for user data"""
+    id: int
+    email: str
+    created_at: str
+    last_login: Optional[str]
+
+
+# ============================================================================
+# Database Helper Functions
+# ============================================================================
+
+def get_db_connection():
+    """Get database connection with timeout"""
+    return psycopg2.connect(
+        NEON_DB_URL,
+        cursor_factory=RealDictCursor,
+        connect_timeout=10  # 10 second timeout
+    )
+
+
+def _signup_user_db(email: str, password_hash: str):
+    """Database operation for signup (runs in thread pool)"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        # Check if user already exists
+        cursor.execute("SELECT email FROM users WHERE email = %s", (email,))
+        if cursor.fetchone():
+            raise ValueError("Email already registered")
+
+        # Create user
+        cursor.execute(
+            "INSERT INTO users (email, password_hash) VALUES (%s, %s) RETURNING id",
+            (email, password_hash)
+        )
+        conn.commit()
+        return True
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def _login_user_db(email: str, password: str):
+    """Database operation for login (runs in thread pool)"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        # Get user
+        cursor.execute("SELECT email, password_hash FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+
+        if not user or not verify_password(password, user['password_hash']):
+            raise ValueError("Invalid email or password")
+
+        # Update last login
+        cursor.execute("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE email = %s", (email,))
+        conn.commit()
+        return user['email']
+    finally:
+        cursor.close()
+        conn.close()
+
+
+def _get_all_users_db():
+    """Database operation to get all users (runs in thread pool)"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("SELECT id, email, created_at, last_login FROM users ORDER BY created_at DESC")
+        users = cursor.fetchall()
+        return users
+    finally:
+        cursor.close()
+        conn.close()
+
+
+# ============================================================================
+# Authentication Helper Functions
+# ============================================================================
+
+def hash_password(password: str) -> str:
+    """Hash password using bcrypt"""
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+
+def verify_password(password: str, hashed: str) -> bool:
+    """Verify password against hash"""
+    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+
+
+def create_jwt_token(email: str) -> str:
+    """Create JWT token for user"""
+    expiration = datetime.utcnow() + timedelta(hours=JWT_EXPIRATION_HOURS)
+    payload = {
+        "email": email,
+        "exp": expiration
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+def verify_jwt_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> dict:
+    """Verify JWT token from request"""
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        return payload
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token has expired")
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+
 # ============================================================================
 # API Endpoints
 # ============================================================================
@@ -166,6 +316,93 @@ async def health_check():
         version="1.0.0",
         services=services
     )
+
+
+@app.post("/api/v1/auth/signup", response_model=AuthResponse)
+async def signup(request: SignupRequest):
+    """
+    User signup endpoint
+    """
+    try:
+        # Hash password
+        password_hash = hash_password(request.password)
+
+        # Run database operation in thread pool
+        await asyncio.to_thread(_signup_user_db, request.email, password_hash)
+
+        # Create JWT token
+        token = create_jwt_token(request.email)
+
+        logger.info("User signup successful", email=request.email)
+
+        return AuthResponse(
+            token=token,
+            email=request.email,
+            message="Signup successful"
+        )
+
+    except ValueError as e:
+        # Email already exists
+        raise HTTPException(status_code=400, detail=str(e))
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Signup error", error=str(e))
+        raise HTTPException(status_code=500, detail=f"Signup failed: {str(e)}")
+
+
+@app.post("/api/v1/auth/login", response_model=AuthResponse)
+async def login(request: LoginRequest):
+    """
+    User login endpoint
+    """
+    try:
+        # Run database operation in thread pool
+        email = await asyncio.to_thread(_login_user_db, request.email, request.password)
+
+        # Create JWT token
+        token = create_jwt_token(email)
+
+        logger.info("User login successful", email=email)
+
+        return AuthResponse(
+            token=token,
+            email=email,
+            message="Login successful"
+        )
+
+    except ValueError as e:
+        # Invalid credentials
+        raise HTTPException(status_code=401, detail=str(e))
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Login error", error=str(e))
+        raise HTTPException(status_code=500, detail=f"Login failed: {str(e)}")
+
+
+@app.get("/api/v1/auth/users", response_model=List[UserResponse])
+async def get_all_users():
+    """
+    Get all registered users (for admin viewing)
+    """
+    try:
+        # Run database operation in thread pool
+        users = await asyncio.to_thread(_get_all_users_db)
+
+        return [
+            UserResponse(
+                id=user['id'],
+                email=user['email'],
+                created_at=str(user['created_at']),
+                last_login=str(user['last_login']) if user['last_login'] else None
+            )
+            for user in users
+        ]
+
+    except Exception as e:
+        logger.error("Error fetching users", error=str(e))
+        raise HTTPException(status_code=500, detail=f"Failed to fetch users: {str(e)}")
 
 
 @app.post("/api/v1/chat", response_model=ChatResponse)
@@ -280,11 +517,11 @@ async def search_knowledge_base(
         collection_name = "textbook_content"
 
         # Perform vector search
-        search_results = qdrant_client.search(
+        search_results = qdrant_client.query_points(
             collection_name=collection_name,
-            query_vector=query_embedding,
+            query=query_embedding,
             limit=top_k
-        )
+        ).points
 
         # Format results
         formatted_results = []
@@ -336,37 +573,49 @@ async def generate_answer(
         Dictionary containing generated answer and metadata
     """
     try:
-        # Build context string from chunks
-        context_text = "\n\n".join([
-            f"[Source: {chunk['metadata']['source']}]\n{chunk['text']}"
-            for chunk in context_chunks[:3]  # Use top 3 chunks
-        ])
+        # Build context string from chunks (if any)
+        context_text = ""
+        if context_chunks and len(context_chunks) > 0:
+            context_text = "\n\n".join([
+                f"[Source: {chunk['metadata']['source']}]\n{chunk['text']}"
+                for chunk in context_chunks[:5]  # Use up to top 5 chunks for context
+            ])
 
-        # Build prompt
-        system_prompt = """You are an expert AI assistant for the Physical AI & Humanoid Robotics textbook.
-Answer questions accurately based on the provided context. If the context doesn't contain enough information,
-say so clearly. Always cite your sources."""
+        # Build strict RAG system message
+        system_message = """You are an AI assistant for the 'Physical AI & Humanoid Robotics' textbook.
 
-        user_prompt = f"""Context from the textbook:
+CRITICAL RULE: You must ONLY use the provided context below to answer the user's question.
+
+If the provided context is empty or does not contain the answer, you MUST respond with the following EXACT phrase:
+'I don't know the answer to that based on the Physical AI textbook content.'
+
+Do not use any external or general knowledge. If you can answer, cite the source from the context, e.g., (Source: Chapter 1)."""
+
+        # Build user message with context
+        if context_text:
+            user_message = f"""[CONTEXT START]
 {context_text}
+[CONTEXT END]
 
-Question: {query}
+User Question: {query}"""
+        else:
+            user_message = f"""[CONTEXT START]
+(No relevant context found in the textbook)
+[CONTEXT END]
 
-Please provide a clear, accurate answer based on the context above."""
+User Question: {query}"""
 
-        # Generate response using Cohere
-        response = cohere_client.generate(
+        # Generate response using Cohere Chat API
+        response = cohere_client.chat(
             model=LLM_MODEL,
-            prompt=user_prompt,
-            max_tokens=500,
+            message=user_message,
+            preamble=system_message,
             temperature=0.3,  # Lower temperature for more factual responses
-            k=0,
-            stop_sequences=[],
-            return_likelihoods='NONE'
+            max_tokens=500
         )
 
         return {
-            "text": response.generations[0].text.strip(),
+            "text": response.text.strip(),
             "model": LLM_MODEL
         }
 
