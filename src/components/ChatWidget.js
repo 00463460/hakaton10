@@ -2,9 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatWidget.module.css';
 import AuthModal from './AuthModal';
 
-const BACKEND_URL = process.env.NODE_ENV === 'production'
-  ? 'https://your-backend-url.onrender.com'  // Replace with your deployed backend URL
-  : 'http://localhost:8000';
+const BACKEND_URL = 'http://localhost:8000';
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styles from './AuthModal.module.css';
 
-const BACKEND_URL = process.env.NODE_ENV === 'production'
-  ? 'https://your-backend-url.onrender.com'
-  : 'http://localhost:8000';
+const BACKEND_URL = 'http://localhost:8000';
 
 export default function AuthModal({ isOpen, onClose, onSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
