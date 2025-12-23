@@ -8,15 +8,29 @@
    ======================================================================== */
 
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Bold Red & Black Theme - Aggressive & Cool */
+  --ifm-color-primary: #ff0000;
+  --ifm-color-primary-dark: #e60000;
+  --ifm-color-primary-darker: #cc0000;
+  --ifm-color-primary-darkest: #b30000;
+  --ifm-color-primary-light: #ff1a1a;
+  --ifm-color-primary-lighter: #ff3333;
+  --ifm-color-primary-lightest: #ff4d4d;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(255, 0, 0, 0.1);
+
+  /* Red & Black Accent Colors */
+  --accent-crimson: #dc143c;
+  --accent-dark-red: #8b0000;
+  --accent-blood-red: #b22222;
+  --accent-scarlet: #ff2400;
+
+  /* Background Colors - Dark Black */
+  --ifm-background-color: #000000;
+  --ifm-background-surface-color: #0a0a0a;
+  --ifm-color-emphasis-100: #0a0a0a;
+  --ifm-color-emphasis-200: #141414;
+  --ifm-color-emphasis-300: #1a1a1a;
 
   /* Custom variables for KaTeX */
   --katex-font-size-base: 1.1em;
@@ -24,16 +38,28 @@
   --katex-inline-margin: 0.2rem;
 }
 
-/* Dark mode theme adjustments */
+/* Dark mode theme adjustments - Red & Black Dark Theme */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #ff3333;
+  --ifm-color-primary-dark: #ff1a1a;
+  --ifm-color-primary-darker: #ff0000;
+  --ifm-color-primary-darkest: #e60000;
+  --ifm-color-primary-light: #ff4d4d;
+  --ifm-color-primary-lighter: #ff6666;
+  --ifm-color-primary-lightest: #ff8080;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 0, 0, 0.2);
+
+  --accent-crimson: #ff1744;
+  --accent-dark-red: #c62828;
+  --accent-blood-red: #d32f2f;
+  --accent-scarlet: #ff5252;
+
+  /* Dark Black Backgrounds */
+  --ifm-background-color: #000000;
+  --ifm-background-surface-color: #0a0a0a;
+  --ifm-color-emphasis-100: #0a0a0a;
+  --ifm-color-emphasis-200: #141414;
+  --ifm-color-emphasis-300: #1a1a1a;
 }
 
 /* ========================================================================
@@ -497,4 +523,433 @@ body.translated-ltr {
 
 .translated-rtl .menu {
   direction: rtl !important;
+}
+
+/* ========================================================================
+   BOLD ANIMATIONS - Modern & Eye-catching
+   ======================================================================== */
+
+/* Keyframe Animations */
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3),
+                0 0 40px rgba(255, 0, 0, 0.2),
+                0 0 60px rgba(255, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6),
+                0 0 60px rgba(255, 0, 0, 0.4),
+                0 0 90px rgba(255, 0, 0, 0.2);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8),
+                 0 0 20px rgba(255, 0, 0, 0.6),
+                 0 0 30px rgba(255, 0, 0, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 0, 0, 1),
+                 0 0 40px rgba(255, 0, 0, 0.8),
+                 0 0 60px rgba(255, 0, 0, 0.6);
+  }
+}
+
+@keyframes borderRainbow {
+  0% { border-color: #ff0000; }
+  25% { border-color: #dc143c; }
+  50% { border-color: #8b0000; }
+  75% { border-color: #b22222; }
+  100% { border-color: #ff0000; }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Apply animations to headings */
+article h1 {
+  animation: fadeInUp 1s ease-out;
+  border-bottom: 3px solid var(--ifm-color-primary);
+  position: relative;
+}
+
+article h1::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-crimson), var(--accent-dark-red));
+  animation: expandWidth 1.5s ease-out forwards;
+}
+
+@keyframes expandWidth {
+  to { width: 100%; }
+}
+
+article h2 {
+  animation: slideInLeft 0.8s ease-out;
+  transition: all 0.3s ease;
+}
+
+article h2:hover {
+  transform: translateX(10px);
+  color: var(--ifm-color-primary);
+}
+
+/* Enhanced button animations */
+.button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
+}
+
+.button--primary {
+  background: linear-gradient(135deg, var(--ifm-color-primary), var(--accent-dark-red));
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+.button--secondary {
+  border: 2px solid var(--ifm-color-primary);
+  animation: borderRainbow 4s linear infinite;
+}
+
+/* Enhanced code blocks */
+.prism-code {
+  animation: scaleIn 0.5s ease-out;
+  transition: all 0.3s ease;
+}
+
+.prism-code:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(255, 0, 0, 0.3);
+}
+
+/* Enhanced tables */
+table {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+th {
+  background: linear-gradient(135deg, var(--ifm-color-primary), var(--accent-dark-red));
+  animation: gradientShift 5s ease infinite;
+  background-size: 200% 200%;
+}
+
+tr {
+  transition: all 0.3s ease;
+}
+
+tr:hover {
+  transform: scale(1.02);
+  background: linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(139, 0, 0, 0.05));
+}
+
+/* Card hover effects */
+.card {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 0, 0, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: all 0.6s ease;
+}
+
+.card:hover::before {
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.card:hover {
+  transform: translateY(-10px) rotate(2deg);
+  box-shadow: 0 20px 60px rgba(255, 0, 0, 0.3);
+}
+
+/* Admonition animations */
+.admonition {
+  animation: slideInLeft 0.6s ease-out;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.admonition::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent-crimson), var(--accent-dark-red), var(--accent-blood-red));
+  animation: expandHeight 0.8s ease-out;
+}
+
+@keyframes expandHeight {
+  from { height: 0; }
+  to { height: 100%; }
+}
+
+.admonition:hover {
+  transform: translateX(10px);
+  box-shadow: -5px 5px 20px rgba(255, 0, 0, 0.2);
+}
+
+/* Link hover effects */
+a {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+a:not(.button)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-crimson), var(--accent-dark-red));
+  transition: width 0.3s ease;
+}
+
+a:not(.button):hover::after {
+  width: 100%;
+}
+
+a:hover {
+  color: var(--accent-dark-red);
+}
+
+/* Scroll reveal animation */
+.markdown > *:nth-child(odd) {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.markdown > *:nth-child(even) {
+  animation: slideInRight 0.8s ease-out;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Image hover effects */
+img {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+img:hover {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 15px 50px rgba(255, 0, 0, 0.3);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Dark mode animation enhancements */
+[data-theme='dark'] .button--primary {
+  background: linear-gradient(135deg, var(--ifm-color-primary), var(--accent-dark-red));
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .button--primary:hover {
+  box-shadow: 0 10px 40px rgba(255, 0, 0, 0.6);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+[data-theme='dark'] article h1 {
+  animation: neonPulse 3s ease-in-out infinite;
+}
+
+/* Accessibility - Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================================================
+   DARK BLACK BACKGROUNDS FOR ALL SECTIONS
+   ======================================================================== */
+
+/* Global page background */
+body {
+  background-color: #000000 !important;
+}
+
+/* Main content area */
+main {
+  background-color: #000000 !important;
+}
+
+/* Article and documentation pages */
+article {
+  background-color: #000000 !important;
+}
+
+/* Navbar background */
+.navbar {
+  background-color: #0a0a0a !important;
+  border-bottom: 1px solid #ff0000;
+}
+
+/* Sidebar background */
+.sidebar,
+.menu {
+  background-color: #0a0a0a !important;
+}
+
+/* Footer background */
+footer {
+  background-color: #0a0a0a !important;
+  border-top: 1px solid #ff0000;
+}
+
+/* Container backgrounds */
+.container {
+  background-color: transparent !important;
+}
+
+/* Documentation sidebar */
+.theme-doc-sidebar-container {
+  background-color: #0a0a0a !important;
+}
+
+/* Code blocks - darker background */
+pre,
+code {
+  background-color: #0a0a0a !important;
+  border: 1px solid #1a1a1a;
+}
+
+/* Tables with black background */
+table {
+  background-color: #0a0a0a !important;
+}
+
+tbody {
+  background-color: #000000 !important;
+}
+
+/* Pagination */
+.pagination {
+  background-color: transparent !important;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  background-color: transparent !important;
 }
