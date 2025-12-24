@@ -14,29 +14,29 @@
    ======================================================================== */
 
 :root {
-  /* Bold Red & Black Theme - Aggressive & Cool */
-  --ifm-color-primary: #ff0000;
-  --ifm-color-primary-dark: #e60000;
-  --ifm-color-primary-darker: #cc0000;
-  --ifm-color-primary-darkest: #b30000;
-  --ifm-color-primary-light: #ff1a1a;
-  --ifm-color-primary-lighter: #ff3333;
-  --ifm-color-primary-lightest: #ff4d4d;
+  /* Modern Purple & Blue Gradient Theme - Professional & Eye-catching */
+  --ifm-color-primary: #6366f1;
+  --ifm-color-primary-dark: #4f46e5;
+  --ifm-color-primary-darker: #4338ca;
+  --ifm-color-primary-darkest: #3730a3;
+  --ifm-color-primary-light: #818cf8;
+  --ifm-color-primary-lighter: #a5b4fc;
+  --ifm-color-primary-lightest: #c7d2fe;
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(255, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.1);
 
-  /* Red & Black Accent Colors */
-  --accent-crimson: #dc143c;
-  --accent-dark-red: #8b0000;
-  --accent-blood-red: #b22222;
-  --accent-scarlet: #ff2400;
+  /* Purple & Blue Accent Colors */
+  --accent-indigo: #6366f1;
+  --accent-purple: #8b5cf6;
+  --accent-violet: #a855f7;
+  --accent-cyan: #06b6d4;
 
-  /* Background Colors - Dark Black */
-  --ifm-background-color: #000000;
-  --ifm-background-surface-color: #0a0a0a;
-  --ifm-color-emphasis-100: #0a0a0a;
-  --ifm-color-emphasis-200: #141414;
-  --ifm-color-emphasis-300: #1a1a1a;
+  /* Background Colors - Modern Dark Slate */
+  --ifm-background-color: #0f172a;
+  --ifm-background-surface-color: #1e293b;
+  --ifm-color-emphasis-100: #1e293b;
+  --ifm-color-emphasis-200: #334155;
+  --ifm-color-emphasis-300: #475569;
 
   /* Modern Font Families */
   --ifm-font-family-base: 'Rajdhani', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -50,28 +50,28 @@
   --katex-inline-margin: 0.2rem;
 }
 
-/* Dark mode theme adjustments - Red & Black Dark Theme */
+/* Dark mode theme adjustments - Modern Purple & Blue Theme */
 [data-theme='dark'] {
-  --ifm-color-primary: #ff3333;
-  --ifm-color-primary-dark: #ff1a1a;
-  --ifm-color-primary-darker: #ff0000;
-  --ifm-color-primary-darkest: #e60000;
-  --ifm-color-primary-light: #ff4d4d;
-  --ifm-color-primary-lighter: #ff6666;
-  --ifm-color-primary-lightest: #ff8080;
-  --docusaurus-highlighted-code-line-bg: rgba(255, 0, 0, 0.2);
+  --ifm-color-primary: #818cf8;
+  --ifm-color-primary-dark: #6366f1;
+  --ifm-color-primary-darker: #4f46e5;
+  --ifm-color-primary-darkest: #4338ca;
+  --ifm-color-primary-light: #a5b4fc;
+  --ifm-color-primary-lighter: #c7d2fe;
+  --ifm-color-primary-lightest: #e0e7ff;
+  --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.2);
 
-  --accent-crimson: #ff1744;
-  --accent-dark-red: #c62828;
-  --accent-blood-red: #d32f2f;
-  --accent-scarlet: #ff5252;
+  --accent-indigo: #818cf8;
+  --accent-purple: #a78bfa;
+  --accent-violet: #c084fc;
+  --accent-cyan: #22d3ee;
 
-  /* Dark Black Backgrounds */
-  --ifm-background-color: #000000;
-  --ifm-background-surface-color: #0a0a0a;
-  --ifm-color-emphasis-100: #0a0a0a;
-  --ifm-color-emphasis-200: #141414;
-  --ifm-color-emphasis-300: #1a1a1a;
+  /* Modern Dark Slate Backgrounds */
+  --ifm-background-color: #0f172a;
+  --ifm-background-surface-color: #1e293b;
+  --ifm-color-emphasis-100: #1e293b;
+  --ifm-color-emphasis-200: #334155;
+  --ifm-color-emphasis-300: #475569;
 }
 
 /* ========================================================================
@@ -811,11 +811,11 @@ body.translated-ltr {
 }
 
 @keyframes borderRainbow {
-  0% { border-color: #ff0000; }
-  25% { border-color: #dc143c; }
-  50% { border-color: #8b0000; }
-  75% { border-color: #b22222; }
-  100% { border-color: #ff0000; }
+  0% { border-color: #6366f1; }
+  25% { border-color: #8b5cf6; }
+  50% { border-color: #a855f7; }
+  75% { border-color: #06b6d4; }
+  100% { border-color: #6366f1; }
 }
 
 @keyframes gradientShift {
@@ -1077,35 +1077,35 @@ img:hover {
 
 /* Global page background */
 body {
-  background-color: #000000 !important;
+  background-color: #0f172a !important;
 }
 
 /* Main content area */
 main {
-  background-color: #000000 !important;
+  background-color: #0f172a !important;
 }
 
 /* Article and documentation pages */
 article {
-  background-color: #000000 !important;
+  background-color: #0f172a !important;
 }
 
 /* Navbar background */
 .navbar {
-  background-color: #0a0a0a !important;
-  border-bottom: 1px solid #ff0000;
+  background-color: #1e293b !important;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 /* Sidebar background */
 .sidebar,
 .menu {
-  background-color: #0a0a0a !important;
+  background-color: #1e293b !important;
 }
 
 /* Footer background */
 footer {
-  background-color: #0a0a0a !important;
-  border-top: 1px solid #ff0000;
+  background-color: #1e293b !important;
+  border-top: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 /* Container backgrounds */
@@ -1115,23 +1115,23 @@ footer {
 
 /* Documentation sidebar */
 .theme-doc-sidebar-container {
-  background-color: #0a0a0a !important;
+  background-color: #1e293b !important;
 }
 
 /* Code blocks - darker background */
 pre,
 code {
-  background-color: #0a0a0a !important;
-  border: 1px solid #1a1a1a;
+  background-color: #1e293b !important;
+  border: 1px solid #334155;
 }
 
-/* Tables with black background */
+/* Tables with dark background */
 table {
-  background-color: #0a0a0a !important;
+  background-color: #1e293b !important;
 }
 
 tbody {
-  background-color: #000000 !important;
+  background-color: #0f172a !important;
 }
 
 /* Pagination */
