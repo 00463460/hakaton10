@@ -18,8 +18,8 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 import structlog
 from dotenv import load_dotenv
-import psycopg2
-from psycopg2.extras import RealDictCursor
+import psycopg
+from psycopg.rows import dict_row
 import bcrypt
 import jwt
 
@@ -194,9 +194,9 @@ class UserResponse(BaseModel):
 
 def get_db_connection():
     """Get database connection with timeout"""
-    return psycopg2.connect(
+    return psycopg.connect(
         NEON_DB_URL,
-        cursor_factory=RealDictCursor,
+        row_factory=dict_row,
         connect_timeout=10  # 10 second timeout
     )
 
