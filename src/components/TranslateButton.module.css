@@ -79,14 +79,14 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .translateButton {
-    bottom: 100px;
+    bottom: 16px;
     left: 16px;
-    width: 50px;
-    height: 50px;
+    width: 56px;
+    height: 56px;
   }
 
   .icon {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .label {
@@ -94,6 +94,6 @@
   }
 
   .translateButton:hover {
-    width: 70px;
+    width: 75px;
   }
 }

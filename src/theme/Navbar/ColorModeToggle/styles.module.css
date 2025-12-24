@@ -1,0 +1,11 @@
+.navbarControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .navbarControls {
+    gap: 8px;
+  }
+}

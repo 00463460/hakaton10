@@ -180,16 +180,6 @@ export default function Home() {
       description="An AI-native textbook for learning Physical AI, humanoid robotics, ROS 2, simulation, and vision-language-action models for embodied intelligence."
       wrapperClassName={styles.layoutWrapper}
     >
-      {/* User Welcome Bar */}
-      <div className={styles.welcomeBar}>
-        <div className="container">
-          <span>Welcome back, <strong>{userEmail}</strong>! 👋</span>
-          <button onClick={handleLogout} className={styles.logoutBtn}>
-            Sign Out
-          </button>
-        </div>
-      </div>
-
       <div className={styles.landingPage}>
         <div className={styles.heroContainer}>
           <div className={styles.heroLeft}>
