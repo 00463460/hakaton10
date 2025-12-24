@@ -127,24 +127,32 @@
 
 .badge {
   display: inline-block;
-  padding: 0.5rem 1.5rem;
-  background: rgba(255, 255, 255, 0.2);
+  padding: 0.6rem 1.8rem;
+  background: rgba(255, 0, 0, 0.2);
   border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 0, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
 }
 
 .mainTitle {
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.2;
+  font-family: 'Exo 2', 'Arial Black', sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.1;
   margin-bottom: 1.5rem;
   color: white;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   animation: titleGlow 3s ease-in-out infinite, slideInLeft 1s ease-out;
   text-shadow: 0 0 20px rgba(255, 0, 0, 0.8),
-               0 0 40px rgba(255, 0, 0, 0.5);
+               0 0 40px rgba(255, 0, 0, 0.5),
+               3px 3px 0px rgba(0, 0, 0, 0.8);
 }
 
 @keyframes titleGlow {
@@ -171,11 +179,14 @@
 }
 
 .description {
-  font-size: 1.25rem;
-  line-height: 1.6;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.7;
   margin-bottom: 2.5rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   max-width: 600px;
+  letter-spacing: 0.5px;
 }
 
 .ctaButtons {
@@ -219,17 +230,21 @@
 }
 
 .statNumber {
-  font-size: 3rem;
-  font-weight: 800;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
   color: white;
   line-height: 1;
+  text-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
 }
 
 .statLabel {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
   margin-top: 0.5rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 2px;
 }
 
 /* Right Side - Topic Cards */
@@ -322,15 +337,22 @@
 }
 
 .topicCard h3 {
-  font-size: 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #2d3748;
+  color: #000000;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .topicCard p {
-  color: #718096;
+  font-family: 'Rajdhani', sans-serif;
+  color: #333333;
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 
 /* Curriculum Section */
@@ -340,18 +362,25 @@
 }
 
 .sectionTitle {
+  font-family: 'Exo 2', sans-serif;
   text-align: center;
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 3rem;
+  font-weight: 900;
   margin-bottom: 1rem;
   color: #ffffff;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
 }
 
 .sectionSubtitle {
+  font-family: 'Rajdhani', sans-serif;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 500;
   color: #cccccc;
   margin-bottom: 3rem;
+  letter-spacing: 0.5px;
 }
 
 /* Timeline Styles */
@@ -425,15 +454,23 @@
 }
 
 .timelineContent h3 {
-  font-size: 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
   margin-bottom: 0.75rem;
   color: #ffffff;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
 }
 
 .timelineContent p {
-  line-height: 1.6;
+  font-family: 'Rajdhani', sans-serif;
+  line-height: 1.7;
   margin-bottom: 1rem;
   color: #cccccc;
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
 .moduleLink {
@@ -517,12 +554,16 @@
 }
 
 .featureCard h3 {
-  font-size: 1.2rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
   margin-bottom: 0.5rem;
   position: relative;
   z-index: 1;
   transition: color 0.3s ease;
   color: #ffffff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .featureCard:hover h3 {
@@ -530,11 +571,15 @@
 }
 
 .featureCard p {
-  line-height: 1.5;
+  font-family: 'Rajdhani', sans-serif;
+  line-height: 1.6;
   margin: 0;
   color: #cccccc;
   position: relative;
   z-index: 1;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
 /* CTA Section */
@@ -566,11 +611,17 @@
 }
 
 .ctaSection h2 {
-  font-size: 2.5rem;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
   margin-bottom: 1rem;
   color: white;
   position: relative;
   z-index: 1;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(255, 0, 0, 0.8),
+               3px 3px 0px rgba(0, 0, 0, 0.8);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -584,12 +635,16 @@
 }
 
 .ctaSection p {
-  font-size: 1.2rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 500;
   margin-bottom: 2rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  letter-spacing: 0.5px;
+  line-height: 1.7;
 }
 
 .ctaSection .ctaButtons {
