@@ -16,7 +16,7 @@ export default function WelcomeRobot() {
 
         // Speak the message
         if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance('This website is made by Kishan');
+          const utterance = new SpeechSynthesisUtterance('This website is made by Kashan');
           utterance.lang = 'en-US';
           utterance.rate = 0.9;
           utterance.pitch = 1.1;
@@ -66,7 +66,7 @@ export default function WelcomeRobot() {
       </div>
 
       <div className={styles.speechBubble}>
-        <p>This website is made by <strong>Kishan</strong></p>
+        <p>This website is made by <strong>Kashan</strong></p>
         <div className={styles.bubbleTail}></div>
       </div>
 
